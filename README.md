@@ -69,9 +69,9 @@ TRADE 거래 테이블
 | STOCK_SEQ      | 종목코드       |                        |
 | TRADE_TYPE     | 매수/매도      | 001 : 매수, 002 : 매도, 003 : 초기데이터  |
 | OLD_PRICE      | 기존 금액      |                        |
-| TRADE_PRICE    | 매수/매도 금액                         |
-| TRADE_DAY    	 | 일자         	|      				  |
-| TRADE_TIME     | 일시			|    					  |
+| TRADE_PRICE    | 매수/매도 금액 |      			|
+| TRADE_DAY    	 | 거래일자        |      			|
+| TRADE_TIME     | 거래시간		|    			  |
 | CREATE_USER_ID | 생성 사용자 ID |                        |
 | CREATE_DATE    | 생성 일시      |                        |
 
@@ -86,7 +86,7 @@ LOG 로그 테이블
 | END_PRICE      | 마감금액       |      |
 | VIEW_CNT       | 조회수         |      |
 | TRADE_CNT      | 거래수         |      |
-| LOG_DAY    	 | 일자         	|      |
+| LOG_DAY    	 | 로그일자        |      |
 | CREATE_USER_ID | 생성 사용자 ID  |      |
 | CREATE_DATE    | 생성 일시      |      |
 | MODIFY_USER_ID | 수정 사용자 ID |      |
@@ -96,7 +96,6 @@ LOG 로그 테이블
 ### 실행 방법
 1. 모든 주제의 상위 5건 조회
 	* 호출 URL : GET localhost:9090/api/v1/realtime-ranking
-	* 파라미터 : 페이지 사이즈 (기본 20, 예시 : localhost:9090/api/v1/realtime-ranking?size=20)
 	* 리턴 값 : 주제별 상위 5건 목록, 페이징 정보 리턴, 성공 시 OK(200) 발생
 	  * 순위 항목 정보 - stockName":종목명","beginPrice":시작가,"endPrice":현재가,"viewCnt":조회수,"tradeCnt":거래량,"differenePrice":차액,"differenePriceRate":차액비율
 2. 주제별 API 조회
@@ -108,7 +107,7 @@ LOG 로그 테이블
 3. 순위 랜덤 변경
 	* 호출 URL : PUT localhost:9090/api/v1/random-trades
 	* 리턴 값 : 성공 시 OK(200) 발생
-4. 스케줄러 호출
+4. 순위 랜덤 변경 스케줄러 호출
 	* 스케줄러는 5초마다 동작 
 	* 시작 호출 URL : GET localhost:9090/api/v1/random-trades/starat
 	* 종료 호출 URL : GET localhost:9090/api/v1/random-trades/end
