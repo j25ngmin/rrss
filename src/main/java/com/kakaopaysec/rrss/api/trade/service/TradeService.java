@@ -123,7 +123,6 @@ public class TradeService {
 		int maxStock = stockDtoList.size();
 		int maxTrade = 5;
 		int priceRate = 50;
-		String endtime = "2359";
 
 		// 1. 랜덤 거래내역 추가
 		int randomStockCount = (int) Math.random() * ((maxStock - 1) - (maxStock / 2)) + (maxStock / 2);
@@ -140,6 +139,7 @@ public class TradeService {
 
 				StockDto stock = stockDtoList.get(randomStockIndex);
 				Long saveStockSeq = stock.getStockSeq();
+				
 				// 거래 내역 생성 횟수
 				int randomTradeCount = (int) (Math.random() * ((maxTrade - 1) + 1)) + 1;
 				String today = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
@@ -161,6 +161,7 @@ public class TradeService {
 
 				// 거래 내역 추가
 				for (int rt = 0; rt < randomTradeCount; rt++) {
+					
 					// 매입/매수
 					int randomTradeType = (int) (Math.random() * ((2 - 1) + 1)) + 1;
 					String tradeType = TradeType.findByCodeAndTradeType(randomTradeType).getTradeType();

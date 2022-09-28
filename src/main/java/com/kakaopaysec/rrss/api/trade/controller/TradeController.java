@@ -50,9 +50,9 @@ public class TradeController {
 	 * @return
 	 */
 	@GetMapping("/random-trades/start")
-	public ResponseEntity<Object> start() {
+	public ResponseEntity<Void> start() {
 		schedulerService.register("test");
-		return new ResponseEntity<Object>(null, HttpStatus.OK);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	/**
@@ -60,22 +60,22 @@ public class TradeController {
 	 * @return
 	 */
 	@GetMapping("/random-trades/end")
-	public ResponseEntity<Object> end() {
+	public ResponseEntity<Void> end() {
 		schedulerService.remove("test");
-		return new ResponseEntity<Object>(null, HttpStatus.OK);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	/***
-	 * 거래 목록 조회
+	 * 랜덤 거래 생성
 	 * 
 	 * @param keywords
 	 * @param tradeNo
 	 * @return
 	 */
-	@GetMapping("/random-trades")
+	@PutMapping("/random-trades")
 	public ResponseEntity<Void> randomTrade() {
 		tradeService.randomTrade();
-		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 
 	}
 

@@ -17,21 +17,23 @@
 |-- README.md
 `-- src/main/java/com/kakaopaysec/rrss
     |--api
-    |   |-- log
+    |   |-- realtimeranking : 실시간 순위
+    |   |   |-- controller
+    |   |-- log : 일자/종목 별 조회수, 거래량 관리
     |   |   |-- controller
 	|   |   |-- service
 	|	|   |-- repository
 	|	|   |-- dto
 	|	|   |-- entity
 	|   |   `-- mapper
-    |   |-- stock
+    |   |-- stock : 종목 관리
     |   |   |-- controller
 	|   |   |-- service
 	|	|   |-- repository
 	|	|   |-- dto
 	|	|   |-- entity
 	|   |   `-- mapper
-    |   |-- trade
+    |   |-- trade : 거래내역 관리, 순위 랜덤 변경
     |       |-- controller
 	|       |-- service
 	|		|-- repository
@@ -66,15 +68,16 @@ TRADE 거래 테이블
 |----------------|----------------|------------------------|
 | TRADE_SEQ      | 거래 순번      |                        |
 | STOCK_SEQ      | 종목코드       |                        |
-| TRADE_TYPE     | 매수/매도      | 001 : 매수, 002 : 매도 |
+| TRADE_TYPE     | 매수/매도      | 001 : 매수, 002 : 매도, 003 : 초기데이터  |
 | OLD_PRICE      | 기존 금액      |                        |
-| TRADE_PRICE    | 매수/매도 금액 |                        |
-| TRADE_DAY    	 | 일자         	|      |
+| TRADE_PRICE    | 매수/매도 금액                         |
+| TRADE_DAY    	 | 일자         	|      				  |
+| TRADE_TIME     | 일시			|    					  |
 | CREATE_USER_ID | 생성 사용자 ID |                        |
 | CREATE_DATE    | 생성 일시      |                        |
 
 
-HISTORY 히스토리 테이블
+LOG 로그 테이블
 
 | 필드           | 설명           | 기타 |
 |----------------|----------------|------|
@@ -87,29 +90,34 @@ HISTORY 히스토리 테이블
 | LOG_DAY    	 | 일자         	|      |
 | CREATE_USER_ID | 생성 사용자 ID  |      |
 | CREATE_DATE    | 생성 일시      |      |
+| MODIFY_USER_ID | 수정 사용자 ID |      |
+| MODIFY_DATE    | 수정 일시      |      |
 
 
 ### 실행 방법
-1. 모든 제의 상위 5건 조회
+1. 모든 주제의 상위 5건 조회
 	* 호출 URL : GET localhost:9090/api/v1/realtime-ranking
 	* 파라미터 : 페이지 사이즈 (기본 20, 예시 : localhost:9090/api/v1/realtime-ranking?size=20)
-	* 리턴 값 : 사용자 목록, 페이징 정보 리턴		
+	* 리턴 값 : 주제별 상위 5건 목록, 페이징 정보 리턴, 성공 시 OK(200) 발생
+	  ㄴ 순위 항목 정보 - stockName":종목명","beginPrice":시작가,"endPrice":현재가,"viewCnt":조회수,"tradeCnt":거래량,"differenePrice":차액,"differenePriceRate":차액비율
 2. 주제별 API 조회
 	* 호출 URL : GET localhost:9090/api/v1/realtime-ranking/{subject}
-	* 파라미터 : 주제 파라메터 (VIEW : 많이 본,  INCREASE : 많이 오른, REDUCE : 많이 내린, VOLUME : 거래량 많은)
-	* 리턴 값 : 사용자 정보, 존재하지 않는 경우 NO_CONTENT(204) 발생 
+	* 파라미터 : 페이지 사이즈 (기본 20, 예시 : localhost:9090/api/v1/realtime-ranking?size=20)
+			  주제 파라메터 (VIEW : 많이 본,  INCREASE : 많이 오른, REDUCE : 많이 내린, VOLUME : 거래량 많은)
+	* 리턴 값 : 주제별 상위 n건 목록, 성공 시 OK(200) 발생
+	   ㄴ 순위 항목 정보 - stockName":종목명","beginPrice":시작가,"endPrice":현재가,"viewCnt":조회수,"tradeCnt":거래량,"differenePrice":차액,"differenePriceRate":차액비율
 3. 순위 랜덤 변경
-	* 호출 URL : PUT localhost:9090/api/v1/random-trade
+	* 호출 URL : PUT localhost:9090/api/v1/random-trades
 	* 리턴 값 : 성공 시 OK(200) 발생
 4. 스케줄러 호출
 	* 스케줄러는 5초마다 동작 
-	* 시작 호출 URL : GET localhost:9090/api/v1/random-trade-start
-	* 종료 호출 URL : GET localhost:9090/api/v1/random-trade-end
+	* 시작 호출 URL : GET localhost:9090/api/v1/random-trades/starat
+	* 종료 호출 URL : GET localhost:9090/api/v1/random-trades/end
 
 
 ### 문제 해결 전략
-- 요구사항에 부합하며 간단한 DB 구조설계
-- 구조화된 API 설계로 직관적인 프로그래밍
-- JPA 사용을 통해 수월한 도메인 관리 가능
-- JWT, Spring Security 개념 적용을 통해 backend 안정화
+- 요구사항에 부합하고 간단한 DB 구조설계를 했습니다.
+- 실제로 주식 거래가 일어나듯 거래데이터 기준으로 실시간 순위를 조회했습니다. 단, 각 종목의 주식의 개수는 1개로 전제합니다.
+- 스케줄러를 이용하여 5초단위로 거래데이터를 적재하는 기능도 추가 개발했습니다.
+- 구조화된 API 설계로 도메인 관리가 수월했으며 이로인해 직관적인 프로그래밍을 했습니다.
 
