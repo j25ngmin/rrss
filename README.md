@@ -9,8 +9,7 @@
 1. Spring Boot 2.5.3
 2. Java 11
 3. DB h2
-4. JPA, Spring Security, JWT
-4. 사용 툴 : STS, Chrome
+4. 사용 툴 : STS, Chrome, Postman
 
 * 소스 구조
 
@@ -99,13 +98,13 @@ LOG 로그 테이블
 	* 호출 URL : GET localhost:9090/api/v1/realtime-ranking
 	* 파라미터 : 페이지 사이즈 (기본 20, 예시 : localhost:9090/api/v1/realtime-ranking?size=20)
 	* 리턴 값 : 주제별 상위 5건 목록, 페이징 정보 리턴, 성공 시 OK(200) 발생
-	  ㄴ 순위 항목 정보 - stockName":종목명","beginPrice":시작가,"endPrice":현재가,"viewCnt":조회수,"tradeCnt":거래량,"differenePrice":차액,"differenePriceRate":차액비율
+	  * 순위 항목 정보 - stockName":종목명","beginPrice":시작가,"endPrice":현재가,"viewCnt":조회수,"tradeCnt":거래량,"differenePrice":차액,"differenePriceRate":차액비율
 2. 주제별 API 조회
 	* 호출 URL : GET localhost:9090/api/v1/realtime-ranking/{subject}
 	* 파라미터 : 페이지 사이즈 (기본 20, 예시 : localhost:9090/api/v1/realtime-ranking?size=20)
 			  주제 파라메터 (VIEW : 많이 본,  INCREASE : 많이 오른, REDUCE : 많이 내린, VOLUME : 거래량 많은)
 	* 리턴 값 : 주제별 상위 n건 목록, 성공 시 OK(200) 발생
-	   ㄴ 순위 항목 정보 - stockName":종목명","beginPrice":시작가,"endPrice":현재가,"viewCnt":조회수,"tradeCnt":거래량,"differenePrice":차액,"differenePriceRate":차액비율
+	  * 순위 항목 정보 - stockName":종목명","beginPrice":시작가,"endPrice":현재가,"viewCnt":조회수,"tradeCnt":거래량,"differenePrice":차액,"differenePriceRate":차액비율
 3. 순위 랜덤 변경
 	* 호출 URL : PUT localhost:9090/api/v1/random-trades
 	* 리턴 값 : 성공 시 OK(200) 발생
