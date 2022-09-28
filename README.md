@@ -97,11 +97,13 @@ LOG 로그 테이블
 1. 모든 주제의 상위 5건 조회
 	* 호출 URL : GET localhost:9090/api/v1/realtime-ranking
 	* 리턴 값 : 주제별 상위 5건 목록, 페이징 정보 리턴, 성공 시 OK(200) 발생
+	  * 주제 정보 - VIEW : 많이 본,  INCREASE : 많이 오른, REDUCE : 많이 내린, VOLUME : 거래량 많은
 	  * 순위 항목 정보 - stockName":종목명","beginPrice":시작가,"endPrice":현재가,"viewCnt":조회수,"tradeCnt":거래량,"differenePrice":차액,"differenePriceRate":차액비율
 2. 주제별 API 조회
 	* 호출 URL : GET localhost:9090/api/v1/realtime-ranking/{subject}
-	* 파라미터 : 페이지 사이즈 (기본 20, 예시 : localhost:9090/api/v1/realtime-ranking?size=20)
-			  주제 파라메터 (VIEW : 많이 본,  INCREASE : 많이 오른, REDUCE : 많이 내린, VOLUME : 거래량 많은)
+	* 파라미터
+	  * 페이지 사이즈 - 기본 20, 예시 : localhost:9090/api/v1/realtime-ranking?size=20
+	  * 주제 파라메터 - VIEW : 많이 본,  INCREASE : 많이 오른, REDUCE : 많이 내린, VOLUME : 거래량 많은
 	* 리턴 값 : 주제별 상위 n건 목록, 성공 시 OK(200) 발생
 	  * 순위 항목 정보 - stockName":종목명","beginPrice":시작가,"endPrice":현재가,"viewCnt":조회수,"tradeCnt":거래량,"differenePrice":차액,"differenePriceRate":차액비율
 3. 순위 랜덤 변경
