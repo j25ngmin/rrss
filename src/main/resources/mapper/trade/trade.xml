@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tmoncorp.portal_api.account.approval.master.mapper.ApprovalMasterMapper">
+
+	<sql id="sql_findByApproved">        
+	SELECT t1.approvalNo
+        FROM approvalMaster t1
+                 INNER JOIN approvalLine t2
+                     ON t1.approvalNo = t2.approvalNo
+                 INNER JOIN (
+                            SELECT approvalNo, MIN(ApprovalLineNo) AS approvalLineNo
+                            FROM approvalLine
+                            WHERE approveType = 'AT000'
+                            GROUP BY approvalNo
+                            ) t3
+                     ON t2.approvalNo = t3.approvalNo
+                            AND t2.approvalLineNo = t3.approvalLineNo
+                 LEFT OUTER JOIN dlmember t4
+                     ON t2.approver = t4.dlMgtId
+        WHERE 1=1
+          AND t1.approvalStatus NOT IN ('AS004', 'AS005')
+          AND (t2.approver = #{loginEmpno}
+                   OR t4.empNo = #{loginEmpno})
+    </sql>
+	<sql id="sql_findByPrevExpenseApproved">        SELECT t1.approvalNo
+        FROM approvalmaster t1
+                 INNER JOIN approvalexpense t2
+                     ON t1.approvalNo = t2.approvalNo
+        WHERE 1=1
+          AND t1.approvalStatus = 'AS999'
+          AND t2.expenseApprover = #{loginEmpno}
+          AND t2.expenseApproveDate IS NOT NULL
+    </sql> 
+    
+    <!-- 결재할 문서 -->
+	<select id="findByApproved" parameterType="java.util.HashMap" resultType="java.lang.String">
+		<include refid="sql_findByApproved" />
+	</select> 
+	
+	<!-- 통합문서함 -->
+	<select id="findByXml" parameterType="java.util.HashMap" resultType="java.lang.String">
+		SELECT *
+		FROM TRADE
+	</select>
+</mapper>
